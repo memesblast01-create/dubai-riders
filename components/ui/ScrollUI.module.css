@@ -1,0 +1,134 @@
+.progressTrack {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: rgba(255,255,255,0.06);
+  z-index: 200;
+  overflow: hidden;
+}
+.progressFill {
+  height: 100%;
+  width: 100%;
+  transform-origin: left;
+  transform: scaleX(0);
+}
+
+.dots {
+  position: fixed;
+  right: 36px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  align-items: flex-end;
+}
+
+.dot {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 3px 0;
+  position: relative;
+}
+.dotInner {
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  transition: all 0.35s cubic-bezier(0.23,1,0.32,1);
+  order: 2;
+}
+.dot.active .dotInner {
+  background: var(--accent, #FF5200);
+  box-shadow: 0 0 12px var(--accent, #FF5200);
+  transform: scale(1.6);
+}
+.dotLabel {
+  font-family: var(--font-condensed);
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.25);
+  opacity: 0;
+  transform: translateX(8px);
+  transition: opacity 0.25s, transform 0.25s;
+  order: 1;
+  pointer-events: none;
+}
+.dot:hover .dotLabel,
+.dot.active .dotLabel {
+  opacity: 0.6;
+  transform: translateX(0);
+}
+.dot.active .dotLabel { color: rgba(255,255,255,0.55); }
+
+.scrollHint {
+  position: fixed;
+  bottom: 42px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  z-index: 100;
+  animation: fadeInUp 1.2s ease 2s both;
+}
+.scrollText {
+  font-family: var(--font-condensed);
+  font-size: 10px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.28);
+}
+.scrollLine {
+  width: 1px;
+  height: 52px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.35), transparent);
+  animation: scrollPulse 2.2s ease-in-out infinite;
+}
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.3; transform: scaleY(1); }
+  50% { opacity: 0.8; transform: scaleY(1.08); }
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateX(-50%) translateY(16px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+.counter {
+  position: fixed;
+  bottom: 42px;
+  left: 52px;
+  z-index: 100;
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  font-family: var(--font-condensed);
+}
+.counterCurrent {
+  font-size: 26px;
+  font-weight: 300;
+  color: rgba(255,255,255,0.75);
+  line-height: 1;
+}
+.counterDivider {
+  font-size: 12px;
+  color: rgba(255,255,255,0.2);
+}
+.counterTotal {
+  font-size: 12px;
+  color: rgba(255,255,255,0.22);
+}
+
+@media (max-width: 768px) {
+  .dots { right: 18px; gap: 14px; }
+  .counter { left: 22px; }
+  .dotLabel { display: none; }
+}

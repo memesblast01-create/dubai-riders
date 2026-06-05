@@ -1,0 +1,101 @@
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 0%, transparent 100%);
+}
+
+.content {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.logoWrap {
+  display: flex;
+  margin-bottom: 24px;
+}
+.logoD, .logoR {
+  font-family: var(--font-display);
+  font-size: 88px;
+  line-height: 1;
+  animation: letterPulse 2s ease-in-out infinite;
+}
+.logoD { color: rgba(255,255,255,0.85); }
+.logoR {
+  color: rgba(255,82,0,0.85);
+  animation-delay: 0.15s;
+}
+@keyframes letterPulse {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+
+.brand {
+  font-family: var(--font-condensed);
+  font-size: 12px;
+  letter-spacing: 7px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  margin-bottom: 4px;
+}
+.tagline {
+  font-family: var(--font-condensed);
+  font-size: 10px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.18);
+  margin-bottom: 44px;
+}
+
+.barWrap {
+  width: 180px;
+  height: 1px;
+  background: rgba(255,255,255,0.1);
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+.bar {
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(to right, #FF5200, #F5C518);
+  transform-origin: left;
+  transform: scaleX(0);
+}
+
+.pct {
+  font-family: var(--font-display);
+  font-size: 48px;
+  color: rgba(255,255,255,0.12);
+  letter-spacing: 2px;
+  line-height: 1;
+  margin-bottom: 24px;
+}
+.pctSuffix {
+  font-size: 18px;
+  color: rgba(255,255,255,0.08);
+}
+
+.hint {
+  font-family: var(--font-condensed);
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.15);
+}
