@@ -76,7 +76,19 @@ export function useScrollController() {
     const el = scrollContainerRef.current;
     if (!el) return;
     el.addEventListener('scroll', onScroll, { passive: true });
-    return () => el.removeEventListener('scroll', onScroll);
+
+    // Handle dot navigation jumps
+    const onJump = (e: Event) => {
+      const idx = (e as CustomEvent).detail.idx;
+      const maxY = el.scrollHeight - el.clientHeight;
+      el.scrollTo({ top: idx * 2 * (maxY / 10), behavior: 'smooth' });
+    };
+    window.addEventListener('jumpToSection', onJump);
+
+    return () => {
+      el.removeEventListener('scroll', onScroll);
+      window.removeEventListener('jumpToSection', onJump);
+    };
   }, [onScroll]);
 
   return { scrollContainerRef };
