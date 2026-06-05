@@ -3,7 +3,6 @@
 import React, { useRef, useMemo, useEffect, forwardRef, useImperativeHandle } from 'react';
 import * as THREE from 'three';
 import { useFrame } from '@react-three/fiber';
-import { MeshTransmissionMaterial } from '@react-three/drei';
 import { smoothstep, rangeT, lerpColor } from '@/lib/animations';
 import { BRANDS } from '@/lib/brands';
 
@@ -275,11 +274,8 @@ const DeliveryBike = forwardRef<BikeHandle, BikeProps>(({ initialBrand = 0 }, re
 
       {/* === MAIN FRAME === */}
       <mesh position={[0, 1.02, 0]} castShadow>
-        <mesh>
-          {/* Frame backbone */}
-          <boxGeometry args={[0.06, 0.06, 2.1]} />
-          <primitive object={chromeMat} />
-        </mesh>
+        <boxGeometry args={[0.06, 0.06, 2.1]} />
+        <primitive object={chromeMat} />
       </mesh>
 
       {/* === ENGINE BLOCK === */}
