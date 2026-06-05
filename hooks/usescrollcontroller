@@ -1,0 +1,83 @@
+'use client';
+
+import { useEffect, useRef, useCallback } from 'react';
+import { useSceneStore } from '@/lib/store';
+import { audioManager } from '@/lib/audio';
+
+const TOTAL_SECTIONS = 10;
+const SCROLL_PER_SECTION = 1; // 1 viewport height per section
+
+export function useScrollController() {
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const { setScroll, setParkingPhase, setContactVisible, currentSection } = useSceneStore();
+  const lastSection = useRef(-1);
+  const parkingFireRef = useRef(false);
+  const contactFireRef = useRef(false);
+
+  const onScroll = useCallback(() => {
+    const el = scrollContainerRef.current;
+    if (!el) return;
+
+    const y = el.scrollTop;
+    const maxY = el.scrollHeight - el.clientHeight;
+    setScroll(y, maxY);
+
+    const totalSections = TOTAL_SECTIONS;
+    const rawSection = (y / maxY) * totalSections;
+    const section = Math.floor(rawSection);
+
+    // Section change transitions
+    if (section !== lastSection.current) {
+      lastSection.current = section;
+
+      // Start ambient audio on first scroll
+      if (section >= 1) audioManager.startAmbient();
+
+      // Bike transitions
+      if ([1, 3, 5].includes(section)) {
+        audioManager.playRev();
+        audioManager.startIdle();
+      }
+      if ([2, 4, 6].includes(section)) {
+        audioManager.stopIdle();
+        audioManager.startIdle();
+      }
+
+      // Parking sequence
+      if (section === 7 && !parkingFireRef.current) {
+        parkingFireRef.current = true;
+        useSceneStore.getState().setParkingPhase('arriving');
+      }
+      if (section === 8) {
+        useSceneStore.getState().setParkingPhase('parked');
+      }
+    }
+
+    // Parking phase — trigger headlights at 65% through section 8
+    const sectionProgress = rawSection - section;
+    if (section === 8 && sectionProgress > 0.65) {
+      const phase = useSceneStore.getState().parkingPhase;
+      if (phase === 'parked') {
+        useSceneStore.getState().setParkingPhase('headlights');
+        audioManager.playHeadlightClick();
+        setTimeout(() => audioManager.playIgnition(), 300);
+      }
+    }
+
+    // Contact section
+    if (section >= 9 && !contactFireRef.current) {
+      contactFireRef.current = true;
+      useSceneStore.getState().setParkingPhase('contact');
+      useSceneStore.getState().setContactVisible(true);
+    }
+  }, [setScroll]);
+
+  useEffect(() => {
+    const el = scrollContainerRef.current;
+    if (!el) return;
+    el.addEventListener('scroll', onScroll, { passive: true });
+    return () => el.removeEventListener('scroll', onScroll);
+  }, [onScroll]);
+
+  return { scrollContainerRef };
+}
