@@ -1,0 +1,27 @@
+.main {
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+  cursor: none;
+}
+
+.scrollContainer {
+  position: fixed;
+  inset: 0;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  z-index: 5;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  scroll-behavior: auto; /* manual, not smooth — gsap controls feel */
+}
+.scrollContainer::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollContent {
+  width: 100%;
+  position: relative;
+  /* Height set inline: 1000vh */
+}
