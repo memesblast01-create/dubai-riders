@@ -52,10 +52,9 @@ export default function ScrollUI() {
             className={`${styles.dot} ${activeDot === i ? styles.active : ''}`}
             style={{ '--accent': BRANDS[Math.min(i, 3)].primaryColor } as React.CSSProperties}
             onClick={() => {
-              window.scrollTo({
-                top: i * 2 * window.innerHeight,
-                behavior: 'smooth',
-              });
+              window.dispatchEvent(
+                new CustomEvent('jumpToSection', { detail: { idx: i } })
+              );
             }}
             aria-label={label}
             title={label}
